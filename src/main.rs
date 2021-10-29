@@ -75,14 +75,15 @@ impl Obstacle {
         let screen_x = self.x - player_x;
         let half_size = self.size / 2;
 
+        let wall_glyph = 177;
         // Draw the top half of the obstacle
         for y in 0..self.gap_y - half_size {
-            ctx.set(screen_x, y, RED, BLACK, to_cp437('#'))
+            ctx.set(screen_x, y, RED, BLACK, wall_glyph)
         }
 
         // Draw the bottom half of the obstacle
         for y in self.gap_y + half_size..SCREEN_HEIGHT {
-            ctx.set(screen_x, y, RED, BLACK, to_cp437('#'))
+            ctx.set(screen_x, y, RED, BLACK, wall_glyph)
         }
     }
 
@@ -131,9 +132,6 @@ impl State {
         self.player.render(ctx);
         ctx.print(0, 0, "Press SPACE to flap.");
         ctx.print(0, 1, &format!("Score: {}", self.score));
-        // debug
-        ctx.print(0, 2, &format!("gap_y: {}", self.obstacle.gap_y));
-        ctx.print(0, 3, &format!("size: {}", self.obstacle.size));
 
         self.obstacle.render(ctx, self.player.x);
         if self.player.x > self.obstacle.x {
