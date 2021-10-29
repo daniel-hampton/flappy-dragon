@@ -156,18 +156,20 @@ impl State {
             self.player.flap();
         }
         self.player.render(ctx);
-        ctx.print(0, 0, "Press SPACE to flap.");
-        ctx.print(0, 1, &format!("Score: {}", self.score));
 
         self.obstacle.render(ctx, self.player.x);
         if self.player.x > self.obstacle.x {
             self.score += 1;
             self.obstacle = Obstacle::new(self.player.x + SCREEN_WIDTH, self.score);
         }
+        // Print controls and score.
+        ctx.print_color(0, 0, CYAN, NAVY, "Press SPACE to flap.");
+        ctx.print_color(0, 1, MAGENTA, NAVY, &format!("Score: {}", self.score));
 
         render_land(ctx);
 
-        if self.player.y as i32 > SCREEN_HEIGHT || self.obstacle.hit_obstacle(&self.player) {
+        // SCREEN_HEIGHT - 1 to account for "ground"
+        if self.player.y as i32 > (SCREEN_HEIGHT - 1) || self.obstacle.hit_obstacle(&self.player) {
             self.mode = GameMode::End;
         }
     }
@@ -182,9 +184,9 @@ impl State {
 
     fn main_menu(&mut self, ctx: &mut BTerm) {
         ctx.cls();
-        ctx.print_centered(5, "Welcome to Flappy Dragon");
-        ctx.print_centered(8, "(P) Play Game");
-        ctx.print_centered(9, "(Q) Quit Game");
+        ctx.print_color_centered(5, YELLOW, BLACK, "Welcome to Flappy Dragon");
+        ctx.print_color_centered(8, CYAN, BLACK, "(P) Play Game");
+        ctx.print_color_centered(9, CYAN, BLACK, "(Q) Quit Game");
 
         if let Some(key) = ctx.key {
             match key {
@@ -197,10 +199,10 @@ impl State {
 
     fn dead(&mut self, ctx: &mut BTerm) {
         ctx.cls();
-        ctx.print_centered(5, "You are dead!");
+        ctx.print_color_centered(5, RED, BLACK, "You are dead!");
         ctx.print_centered(6, &format!("You earned {} points", self.score));
-        ctx.print_centered(8, "(P) Play Again");
-        ctx.print_centered(9, "(Q) Quit Game");
+        ctx.print_color_centered(8, CYAN, BLACK, "(P) Play Again");
+        ctx.print_color_centered(9, CYAN, BLACK, "(Q) Quit Game");
 
         if let Some(key) = ctx.key {
             match key {
