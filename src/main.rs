@@ -10,7 +10,9 @@ enum GameMode {
 
 const SCREEN_WIDTH: i32 = 80;
 const SCREEN_HEIGHT: i32 = 50;
-const FRAME_DURATION: f32 = 75.0;
+const FRAME_DURATION: f32 = 33.3;
+const TERMINAL_VELOCITY: f32 = 2.0;
+const DELTA_V: f32 = 0.2;
 
 struct Player {
     x: i32,
@@ -33,8 +35,8 @@ impl Player {
 
     fn gravity_and_move(&mut self) {
         // increasing velocity from "gravity" & terminal vel.
-        if self.velocity < 2.0 {
-            self.velocity += 0.2;
+        if self.velocity < TERMINAL_VELOCITY {
+            self.velocity += DELTA_V;
         }
 
         // Modifying player position.
