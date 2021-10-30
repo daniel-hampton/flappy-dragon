@@ -20,9 +20,10 @@ const DELTA_V: f32 = 0.1;
 const FLAP_DELTA_V: f32 = -0.5;
 
 // Graphic Glyphs
-const DRAGON_GLYPTH: i32 = 64;
+// const DRAGON_GLYPTH: i32 = 64;
 const WALL_GLYPH: i32 = 179;
 const GROUND_GLPYH: i32 = 35;
+const DRAGON_FRAMES: [u16; 6] = [64, 1, 2, 3, 2, 1];
 
 // Wall Gap
 const GAP_Y_MIN: i32 = 5;
@@ -32,6 +33,7 @@ struct Player {
     x: i32,
     y: f32,
     velocity: f32,
+    frame: usize,
 }
 
 impl Player {
@@ -40,6 +42,7 @@ impl Player {
             x,
             y: y as f32,
             velocity: 0.0,
+            frame: 0,
         }
     }
 
@@ -53,7 +56,7 @@ impl Player {
             PointF::new(2.0, 2.0),
             YELLOW,
             NAVY,
-            DRAGON_GLYPTH,
+            DRAGON_FRAMES[self.frame],
         );
         ctx.set_active_console(0);
     }
@@ -72,6 +75,9 @@ impl Player {
         if self.y < 0.0 {
             self.y = 0.0;
         }
+
+        self.frame += 1;
+        self.frame = self.frame % DRAGON_FRAMES.len();
     }
 
     fn flap(&mut self) {
