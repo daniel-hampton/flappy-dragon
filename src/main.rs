@@ -29,6 +29,9 @@ const DRAGON_FRAMES: [u16; 6] = [64, 1, 2, 3, 2, 1];
 const GAP_Y_MIN: i32 = 5;
 const GAP_Y_MAX: i32 = 20;
 
+// Colors
+const TRANSPARENT: (u8, u8, u8, u8) = (0, 0, 0, 0);
+
 struct Player {
     x: i32,
     y: f32,
@@ -55,7 +58,7 @@ impl Player {
             Degrees::new(0.0),
             PointF::new(2.0, 2.0),
             YELLOW,
-            NAVY,
+            TRANSPARENT,
             DRAGON_FRAMES[self.frame],
         );
         ctx.set_active_console(0);
@@ -169,8 +172,17 @@ impl State {
             self.obstacle = Obstacle::new(self.player.x + SCREEN_WIDTH, self.score);
         }
         // Print controls and score.
-        ctx.print_color(0, 0, CYAN, NAVY, "Press SPACE to flap.");
-        ctx.print_color(0, 1, MAGENTA, NAVY, &format!("Score: {}", self.score));
+        ctx.set_active_console(2);
+        ctx.cls_bg(TRANSPARENT);
+        ctx.print_color(0, 0, CYAN, TRANSPARENT, "Press SPACE to flap.");
+        ctx.print_color(
+            0,
+            1,
+            MAGENTA,
+            TRANSPARENT,
+            &format!("Score: {}", self.score),
+        );
+        ctx.set_active_console(0);
 
         render_land(ctx);
 
@@ -189,6 +201,10 @@ impl State {
     }
 
     fn main_menu(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(2);
+        ctx.cls_bg(TRANSPARENT);
+        ctx.set_active_console(0);
+
         ctx.cls();
         ctx.print_color_centered(5, YELLOW, BLACK, "Welcome to Flappy Dragon");
         ctx.print_color_centered(8, CYAN, BLACK, "(P) Play Game");
@@ -204,6 +220,10 @@ impl State {
     }
 
     fn dead(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(2);
+        ctx.cls_bg(TRANSPARENT);
+        ctx.set_active_console(0);
+
         ctx.cls();
         ctx.print_color_centered(5, RED, BLACK, "You are dead!");
         ctx.print_centered(6, &format!("You earned {} points", self.score));
@@ -241,6 +261,7 @@ fn main() -> BError {
         .with_font("../resources/flappy32.png", 32, 32)
         .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
         .with_fancy_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
+        .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
         .with_title("Flappy Dragon Enhanced")
         .build()?;
 
