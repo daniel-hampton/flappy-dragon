@@ -207,8 +207,9 @@ impl State {
 
         ctx.cls();
         ctx.print_color_centered(5, YELLOW, BLACK, "Welcome to Flappy Dragon");
-        ctx.print_color_centered(8, CYAN, BLACK, "(P) Play Game");
-        ctx.print_color_centered(9, CYAN, BLACK, "(Q) Quit Game");
+        ctx.print_color_centered(7, LIGHT_YELLOW, BLACK, "Controls: SPACE to flap!");
+        ctx.print_color_centered(11, CYAN, BLACK, "(P) Play Game");
+        ctx.print_color_centered(12, CYAN, BLACK, "(Q) Quit Game");
 
         if let Some(key) = ctx.key {
             match key {
@@ -263,6 +264,7 @@ fn main() -> BError {
         .with_fancy_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
         .with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "../resources/flappy32.png")
         .with_title("Flappy Dragon Enhanced")
+        .with_tile_dimensions(16, 16)
         .build()?;
 
     main_loop(context, State::new())
