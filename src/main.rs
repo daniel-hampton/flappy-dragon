@@ -1,5 +1,8 @@
 #![warn(clippy::all, clippy::pedantic)]
 
+/// Cross compilation to windows needed mingw-w64 package installed on debian
+/// based systems. Also needed to add the windows target for cargo.
+
 use bracket_lib::prelude::*;
 
 enum GameMode {
